@@ -1,0 +1,754 @@
+/* ==========================================================
+    Cyberattack Dashboard: full stylesheet
+    Direction: deep navy, one amber accent, quiet dark cards
+   ========================================================== */
+
+/* Root color and sizing variables */
+:root {
+  --bg-deep: #090b24;
+  --bg-mid: #121540;
+  --panel: #0f1238;
+  --card: #171b4f;
+  --card-hover: #1c2160;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-amber: rgba(240, 166, 64, 0.35);
+
+  --amber: #f0a640;
+  --amber-deep: #d3831a;
+  --text: #e9eaf7;
+  --text-muted: #9aa0c7;
+
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 10px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --ease: 0.2s ease;
+}
+
+/* Global box sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base html and body settings */
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+/* Page body font and background gradient */
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, #2a1c14 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- Keyboard focus (visible, but not a white box) ---------- */
+
+/* Remove default focus outline */
+:focus {
+  outline: none;
+}
+
+/* Custom visible focus outline for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Layout ---------- */
+
+/* Main flex container layout */
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  min-height: 100vh;
+  padding-right: 24px;
+}
+
+/* Fixed sidebar container */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 280px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding-top: 24px;
+  background: linear-gradient(180deg, var(--panel), var(--bg-deep));
+  border-right: 1px solid var(--line-amber);
+  box-shadow: 6px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Sidebar: logo ---------- */
+
+/* Logo layout inside the sidebar */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100px;
+  margin: 0 16px 16px 20px;
+}
+
+/* Logo image styling */
+.logo img {
+  height: 72px;
+  width: auto;
+  margin: 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Logo text headings */
+.logo h1,
+.logo h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--amber);
+  text-shadow: none;
+}
+
+/* ---------- Sidebar: navigation ---------- */
+
+/* Horizontal rule separator */
+hr {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--line-amber);
+}
+
+/* Divider separator line */
+.separator {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background: var(--line);
+}
+
+/* Navigation selection item */
+.selection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding-left: 0;
+  transition: background-color var(--ease);
+}
+
+/* Active indicator bar on the side of nav items */
+.selection::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--amber);
+  transform: scaleY(0);
+  transition: transform var(--ease);
+}
+
+/* Hover and active states for navigation items */
+.selection:hover,
+.selection:has(a.active),
+.selection.active {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Show active indicator bar on hover or active states */
+.selection:hover::before,
+.selection:has(a.active)::before,
+.selection.active::before {
+  transform: scaleY(1);
+}
+
+/* Current page: brighter label text */
+.selection a.active b {
+  color: var(--text);
+}
+
+/* Navigation link layout */
+.selection a,
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding-left: 30px; /* padding on the link so the whole row is clickable */
+  text-decoration: none;
+}
+
+/* Icons inside navigation items */
+.selection .globe-icon,
+.selection .graph-icon,
+.selection .stats-icon {
+  color: var(--amber);
+  font-size: 26px;
+}
+
+/* Navigation text label */
+.selection b {
+  margin-left: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--amber);
+}
+
+/* ---------- Panels ---------- */
+
+/* Main containers for graphs and maps */
+.graphContainer,
+.mapContainer {
+  margin: 60px 0 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Grid layout for graph container */
+.graphContainer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  justify-items: center;
+  gap: 56px 36px; /* row gap, column gap */
+  flex: 1;
+  min-width: 0;
+  padding: 60px 40px;
+}
+
+/* Map container layout */
+.mapContainer {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 600px;
+  height: 800px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+/* Map marker text size */
+.Marker {
+  font-size: 10px;
+}
+
+/* ---------- Chart cards ---------- */
+
+/* Individual chart card box */
+.graphChart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 320px;
+  height: 300px;
+  padding-top: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color var(--ease), background-color var(--ease);
+}
+
+/* Hover effect for chart cards */
+.graphChart:hover {
+  background: var(--card-hover);
+  border-color: var(--line-amber);
+}
+
+/* Chart card title styles */
+.graphChart h2,
+.graphChart h3 {
+  align-self: stretch;
+  margin: 0 0 8px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: var(--text-muted);
+  text-shadow: none;
+}
+
+/* Recharts text colors are set in each component (a global
+   `.graphChart text { fill }` rule would override them) */
+
+/* Legend: stay inside the card and wrap instead of touching the edges */
+.graphChart .recharts-legend-wrapper {
+  left: 0 !important;
+  width: 100% !important;
+  padding: 0 14px;
+}
+
+/* Chart legend items spacing */
+.graphChart .recharts-legend-item {
+  margin-right: 10px !important;
+}
+
+/* Cartesian grid line colors */
+.recharts-cartesian-grid line,
+.recharts-polar-grid-concentric-polygon,
+.recharts-polar-grid-angle line {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+/* Chart axis line styles */
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+/* Tooltip container styling */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: var(--bg-deep) !important;
+  border: 1px solid var(--line-amber) !important;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Map marker animation ---------- */
+
+/* Blinking class for elements */
+.blink {
+  animation: blink-animation 2s infinite;
+}
+
+/* Keyframes for blinking opacity animation */
+@keyframes blink-animation {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* ---------- Statistics (KPI tiles) ---------- */
+
+/* No outer panel: the tiles sit directly on the page, so they read as a
+   summary strip, distinct from the chart panel below them. */
+.statContainer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin: 60px 0 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+/* When the tiles sit above the charts, tighten the gap between them */
+.statContainer + .graphContainer,
+.statContainer + .mapContainer {
+  margin-top: 24px;
+}
+
+/* Individual vertical statistic box */
+.verticalBox {
+  display: flex;
+  flex-direction: column;
+  height: 130px;
+  margin: 0;
+  padding: 18px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  /* inset bar follows the rounded corners (a border-top would curve) */
+  box-shadow: inset 4px 0 0 var(--amber), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Statistic value text layout */
+.verticalBox b {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-grow: 1;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--amber);
+}
+
+/* Responsive grid for medium screens */
+@media (max-width: 1350px) {
+  .statContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Responsive grid for mobile screens */
+@media (max-width: 700px) {
+  .statContainer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Headings outside cards ---------- */
+
+/* General heading styles */
+h2 {
+  margin: 40px 10px 0;
+  color: var(--amber);
+  text-shadow: none;
+}
+
+/* ---------- Responsive ---------- */
+
+/* Media query for smaller desktop / tablet screens */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 0;
+    padding-right: 0;
+  }
+
+  .sidebar {
+    position: static;
+    flex-basis: auto;
+    width: 100%;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line-amber);
+  }
+
+  .graphContainer,
+  .mapContainer,
+  .statContainer {
+    width: calc(100% - 32px);
+    margin: 24px 16px 0;
+  }
+
+  .graphContainer {
+    padding: 24px 16px;
+  }
+}
+
+/* ---------- Grid breakpoints: 4 x 2 on wide screens ---------- */
+
+/* Graph grid layout for medium-wide screens */
+@media (max-width: 1350px) {
+  .graphContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Graph grid layout for mobile screens */
+@media (max-width: 700px) {
+  .graphContainer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+/* Disable animations and transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================
+   Map
+   ========================================================== */
+
+/* Attack markers: amber dot with a pulsing ring (replaces the 🔴 emoji) */
+.attackMarker {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--bg-deep);
+  box-shadow: 0 0 10px rgba(240, 166, 64, 0.7);
+  cursor: pointer;
+}
+
+/* Pulsing outer ring animation for attack markers */
+.attackMarker::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--amber);
+  opacity: 0;
+  animation: marker-pulse 2.4s ease-out infinite;
+}
+
+/* Hover effect for attack markers */
+.attackMarker:hover {
+  background: #fff;
+}
+
+/* Keyframes for marker pulse effect */
+@keyframes marker-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Popup: dark card, ignores the mouse so it can't cause hover flicker */
+.attackPopup {
+  pointer-events: none;
+}
+
+/* Map popup content box styling */
+.attackPopup .maplibregl-popup-content {
+  padding: 8px 12px;
+  background: var(--card);
+  border: 1px solid var(--line-amber);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+/* IP address text inside map popup */
+.attackPopupIp {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Coordinates text inside map popup */
+.attackPopupCoords {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Popup tip colors for top anchors */
+.attackPopup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.attackPopup.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.attackPopup.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: var(--card);
+}
+
+/* Popup tip colors for bottom anchors */
+.attackPopup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.attackPopup.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.attackPopup.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: var(--card);
+}
+
+/* Popup tip color for left anchor */
+.attackPopup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: var(--card);
+}
+
+/* Popup tip color for right anchor */
+.attackPopup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: var(--card);
+}
+
+/* Attribution box background */
+.maplibregl-ctrl-attrib {
+  background: rgba(9, 11, 36, 0.7) !important;
+}
+
+/* Attribution text color */
+.maplibregl-ctrl-attrib a {
+  color: var(--text-muted) !important;
+}
+
+/* ==========================================================
+   Statistics: bento layout (tiles of different sizes)
+   Use with StatsLayout.jsx. Order in the markup matters:
+   hero, 2 small, wide, tall, wide, tall, 2 small.
+   ========================================================== */
+
+/* Bento grid container layout */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* rows are at least 190px and stretch to fill the screen height */
+  grid-auto-rows: minmax(190px, 1fr);
+  grid-auto-flow: dense;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+  min-height: calc(100vh - 100px);
+  margin: 40px 0 40px;
+}
+
+/* Individual bento tile card */
+.tile {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Hero tile spanning multiple grid slots */
+.tile--hero {
+  grid-column: span 2;
+  grid-row: span 2;
+  border-color: var(--line-amber);
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(240, 166, 64, 0.28), transparent 55%),
+    var(--card);
+}
+
+/* Wide tile spanning two columns */
+.tile--wide {
+  grid-column: span 2;
+}
+
+/* Tall tile spanning two rows */
+.tile--tall {
+  grid-row: span 2;
+}
+
+/* Label text inside bento tiles */
+.tile__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Main statistic value inside tiles */
+.tile__value {
+  margin-top: auto;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--amber);
+}
+
+/* Larger value text for hero tiles */
+.tile--hero .tile__value {
+  font-size: clamp(64px, 7vw, 110px);
+}
+
+/* Small description note inside tiles */
+.tile__note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Mini bar chart (wide tile) */
+.spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 1;
+  margin-top: 16px;
+}
+
+/* Sparkline bar elements */
+.spark i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, var(--amber), rgba(240, 166, 64, 0.25));
+}
+
+/* Ranked list container (tall tiles) */
+.rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* Single row item in ranked list */
+.rows__line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Progress bar container */
+.meter {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+/* Progress bar fill element */
+.meter i {
+  display: block;
+  width: var(--w);
+  height: 100%;
+  border-radius: 999px;
+  background: var(--amber);
+}
+
+/* Larger progress bar variant */
+.meter--lg {
+  height: 10px;
+  margin-top: 14px;
+}
+
+/* Bento grid layout for smaller screens */
+@media (max-width: 1100px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile--hero {
+    grid-row: span 1;
+    min-height: 220px;
+  }
+}
+
+/* Bento grid layout for mobile screens */
+@media (max-width: 700px) {
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile--hero,
+  .tile--wide {
+    grid-column: auto;
+  }
+}
+
+/* Inner body layout for chart cards */
+.graphChart .chartBody {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  padding: 0 8px 8px;
+}
